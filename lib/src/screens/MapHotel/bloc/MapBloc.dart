@@ -13,6 +13,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   Stream<MapState> mapEventToState(MapEvent event) async* {
     if (event is MapRequested) {
       try {
+        yield MapLoading();
         List<Hotel> hotels = await hotelRepository.searchHotel();
 
         yield MapSuccess(hotels: hotels);

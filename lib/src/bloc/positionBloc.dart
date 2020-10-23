@@ -16,13 +16,12 @@ class PositionBloc {
       if (event == Event.Fetch) {
         try {
           Position position = await Geolocator.getLastKnownPosition();
-          print("position");
-          print(position);
-          SingletonPosition.getInstance(position: position);
+          if (position == null)
+            throw SingletonPosition.getInstance(position: position);
 
           verSink.add(Event.Success);
         } catch (error) {
-          verSink.addError(Event.Error);
+          verSink.add(Event.Error);
           SingletonPosition.getInstance(
             position: new Position(
               latitude: 21.003067016601562,

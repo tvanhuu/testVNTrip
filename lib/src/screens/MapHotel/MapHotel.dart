@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:testExample1/src/models/Hotel.dart';
+import 'package:testExample1/src/widgets/DialogLoading.dart';
 
 import 'bloc/MapBloc.dart';
 import 'bloc/bloc.dart';
@@ -116,6 +117,10 @@ class _MapHotelState extends State<MapHotel> {
       body: BlocConsumer<MapBloc, MapState>(
         cubit: mapBloc,
         listener: (context, state) async {
+          if (state is MapLoading) {
+            dialogLoading(context);
+          }
+
           if (state is MapSuccess) {
             List<Marker> lst = [];
             for (Hotel item in state.hotels) {
@@ -125,6 +130,7 @@ class _MapHotelState extends State<MapHotel> {
             setState(() {
               _maker = lst;
             });
+            Navigator.pop(context);
           }
         },
         builder: (context, state) {
